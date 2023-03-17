@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+//import { useState, useEffect } from 'react';
 import { data } from './data.js';
 import {
   Table,
@@ -27,24 +27,55 @@ function App() {
 
   if (data.length > 0){
     data.map(player => (
-      playerList.push(player.Player)
+      playerList.push(player)
     ))
   }
 
-  
-  
-    
   return (
     <div className="App">
-    <h1>NFL RUSH</h1>
-    <Table>
-      {columns.map(column=>(
-        <Th>{column}</Th>
-      ))}
-      {playerList.map(player=>(
-        <Tr>{player}</Tr>
-      ))}
+    <strong>NFL RUSH</strong>
+    <TableContainer>
+    <Table variant='striped' colorScheme='teal'>
+      <TableCaption>NFL RUSH</TableCaption>
+      <Thead>
+        <Tr>
+          {columns.map(column=>(
+          <Th>{column}</Th>
+          ))}
+        </Tr>
+      </Thead>
+      <Tbody>
+        
+          {playerList.map(player=>(
+          <Tr>
+            <Td>{player.Player}</Td>
+            <Td>{player.Team}</Td>
+            <Td>{player.Pos}</Td>
+            <Td>{player.Att}</Td>
+            <Td>{player['Att/G']}</Td>
+            <Td>{player.Yds}</Td>
+            <Td>{player.Avg}</Td>
+            <Td>{player['Yds/G']}</Td>
+            <Td>{player.TD}</Td>
+            <Td>{player.Lng}</Td>
+            <Td>{player['1st']}</Td>
+            <Td>{player['1st%']}</Td>
+            <Td>{player['20+']}</Td>
+            <Td>{player['40+']}</Td>
+            <Td>{player.FUM}</Td>
+          </Tr>
+          ))}
+
+      </Tbody>
+      <Tfoot>
+        <Tr>
+          {columns.map(column=>(
+          <Th>{column}</Th>
+          ))}
+        </Tr>
+      </Tfoot>
     </Table>
+    </TableContainer>
     </div>
   );
 }
