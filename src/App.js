@@ -1,5 +1,5 @@
 import './App.css';
-//import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { data } from './data.js';
 import {
   Table,
@@ -11,43 +11,118 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Input,
+  Button,
 } from '@chakra-ui/react'
 
 
 function App() {
-  const columns = []
-  const playerList = []
+  const playerList = [];
+  const [sortedList, setSortedList] = useState([]);
+  const [input, setInput] = useState("");
+  
 
-  if (data.length > 0){
-    var columnsIn = data[0];
-    for(var key in columnsIn){
-      columns.push(key)
+  useEffect(()=>{
+
+    if (data.length > 0){
+      data.map(player => (
+        playerList.push(player)
+      ))
     }
+    setSortedList(playerList);
+
+  },[])
+  
+
+
+  //should be able to sort by total rushing yards, longest rushing yards, and total touch downs
+  function TotalRushingYardsSort(){
+    const newList = sortedList.sort((a,b)=>{
+      if(a.Yds > b.Yds){
+        return -1;
+      }
+      if(a.Yds < b.Yds){
+        return 1;
+      }
+      return 0;
+    })
+    setSortedList([...newList]);
   }
 
-  if (data.length > 0){
-    data.map(player => (
-      playerList.push(player)
+  function LongestRushingYardsSort(){
+    const newList = sortedList.sort((a,b)=>{
+      if(a.Lng > b.Lng){
+        return -1;
+      }
+      if(a.Lng < b.Lng){
+        return 1;
+      }
+      return 0;
+    })
+    setSortedList([...newList]);
+  }
+
+  function TouchdownsSort(){
+    const newList = sortedList.sort((a,b)=>{
+      if(a.TD > b.TD){
+        return -1;
+      }
+      if(a.TD < b.TD){
+        return 1;
+      }
+      return 0;
+    })
+    setSortedList([...newList]);
+  }
+
+  function FilterByName(){
+    const newList = [];
+    sortedList.map(player=>(
+      (player.Player.includes(input) ? (newList.push(player)) : null)
     ))
+    setSortedList([...newList]);
+    console.log(sortedList);
   }
 
   return (
     <div className="App">
     <strong>NFL RUSH</strong>
+    <form onSubmit={FilterByName}>
+        <Input placeholder='Search By Name: ' htmlSize={20} width='auto' onChange={(e)=>setInput(e.target.value)}/>
+        <Button type="submit" >Submit</Button>
+    </form>
     <TableContainer>
     <Table variant='striped' colorScheme='teal'>
       <TableCaption>NFL RUSH</TableCaption>
       <Thead>
         <Tr>
-          {columns.map(column=>(
-          <Th>{column}</Th>
-          ))}
+          <Th>Player</Th>
+          <Th>Team</Th>
+          <Th>Pos</Th>
+          <Th>Att</Th>
+          <Th>Att/G</Th>
+          <Th>
+            <button onClick={TotalRushingYardsSort}> ↓ </button>Yds
+          </Th>
+          <Th>Avg</Th>
+          <Th>Yds/G</Th>
+          <Th>
+            <button onClick={TouchdownsSort}> ↓ </button>TD
+          </Th>
+          <Th>
+            <button onClick={LongestRushingYardsSort}> ↓ </button>Lng
+          </Th>
+          <Th>1st</Th>
+          <Th>1st%</Th>
+          <Th>20+</Th>
+          <Th>40+</Th>
+          <Th>FUM</Th>
         </Tr>
       </Thead>
       <Tbody>
         
-          {playerList.map(player=>(
-          <Tr>
+          {sortedList.map(player=>(
+          <Tr key={player.id}>
             <Td>{player.Player}</Td>
             <Td>{player.Team}</Td>
             <Td>{player.Pos}</Td>
@@ -69,9 +144,21 @@ function App() {
       </Tbody>
       <Tfoot>
         <Tr>
-          {columns.map(column=>(
-          <Th>{column}</Th>
-          ))}
+          <Th>Player</Th>
+          <Th>Team</Th>
+          <Th>Pos</Th>
+          <Th>Att</Th>
+          <Th>Att/G</Th>
+          <Th>Yds</Th>
+          <Th>Avg</Th>
+          <Th>Yds/G</Th>
+          <Th>TD</Th>
+          <Th>Lng</Th>
+          <Th>1st</Th>
+          <Th>1st%</Th>
+          <Th>20+</Th>
+          <Th>40+</Th>
+          <Th>FUM</Th>
         </Tr>
       </Tfoot>
     </Table>
