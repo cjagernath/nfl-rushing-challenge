@@ -39,13 +39,11 @@ function App() {
   //should be able to sort by total rushing yards, longest rushing yards, and total touch downs
   function TotalRushingYardsSort(){
     const newList = sortedList.sort((a,b)=>{
-      // let x = String(b.Yds);
-      // let y = String(a.Yds);
-      // x.replace(/,/g, '');
-      // y.replace(/,/g, '');
-      // parseInt(x,10);
-      // parseInt(y,10);
-      return b.Yds - a.Yds;
+      let x = String(b.Yds).replace(/\,/g, '');
+      let y = String(a.Yds).replace(/\,/g, '');
+      parseInt(x,10);
+      parseInt(y,10);
+      return x - y;
     })
     setSortedList([...newList]);
   }
