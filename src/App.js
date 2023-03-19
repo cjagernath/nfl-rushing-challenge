@@ -20,7 +20,9 @@ function App() {
   
   const [sortedList, setSortedList] = useState([]);
   const [input, setInput] = useState("");
-  
+  const [tdSorted, setTdSorted] = useState(false);
+  const [trSorted, setTrSorted] = useState(false);
+  const [lrSorted, setLrSorted] = useState(false);
 
   useEffect(()=>{
 
@@ -39,29 +41,41 @@ function App() {
   //should be able to sort by total rushing yards, longest rushing yards, and total touch downs
   function TotalRushingYardsSort(){
     const newList = sortedList.sort((a,b)=>{
-      let x = String(b.Yds).replace(/\,/g, '');
-      let y = String(a.Yds).replace(/\,/g, '');
+      let x = String(b.Yds).replace(/,/g, '');
+      let y = String(a.Yds).replace(/,/g, '');
       parseInt(x,10);
       parseInt(y,10);
+      if (trSorted){
+        return y - x;
+      }
       return x - y;
     })
     setSortedList([...newList]);
+    trSorted === true ? setTrSorted(false) : setTrSorted(true);
   }
 
   function LongestRushingYardsSort(){
     const newList = sortedList.sort((a,b)=>{
       let x = parseInt(b.Lng);
       let y = parseInt(a.Lng);
-      return x-y;
+      if(lrSorted){
+        return y - x;
+      }
+      return x - y;
     })
     setSortedList([...newList]);
+    lrSorted === true ? setLrSorted(false) : setLrSorted(true);
   }
 
   function TouchdownsSort(){
     const newList = sortedList.sort((a,b)=>{
+      if (tdSorted){
+        return a.TD - b.TD;
+      }
       return b.TD - a.TD;
     })
     setSortedList([...newList]);
+    tdSorted === true ? setTdSorted(false) : setTdSorted(true);
   }
 
   function FilterByName(){
