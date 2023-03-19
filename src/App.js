@@ -17,13 +17,14 @@ import {
 
 
 function App() {
-  const playerList = [];
+  
   const [sortedList, setSortedList] = useState([]);
   const [input, setInput] = useState("");
   
 
   useEffect(()=>{
 
+    const playerList = [];
     if (data.length > 0){
       data.map(player => (
         playerList.push(player)
@@ -38,59 +39,57 @@ function App() {
   //should be able to sort by total rushing yards, longest rushing yards, and total touch downs
   function TotalRushingYardsSort(){
     const newList = sortedList.sort((a,b)=>{
-      if(a.Yds > b.Yds){
-        return -1;
-      }
-      if(a.Yds < b.Yds){
-        return 1;
-      }
-      return 0;
+      // let x = String(b.Yds);
+      // let y = String(a.Yds);
+      // x.replace(/,/g, '');
+      // y.replace(/,/g, '');
+      // parseInt(x,10);
+      // parseInt(y,10);
+      return b.Yds - a.Yds;
     })
     setSortedList([...newList]);
   }
 
   function LongestRushingYardsSort(){
     const newList = sortedList.sort((a,b)=>{
-      if(a.Lng > b.Lng){
-        return -1;
-      }
-      if(a.Lng < b.Lng){
-        return 1;
-      }
-      return 0;
+      let x = parseInt(b.Lng);
+      let y = parseInt(a.Lng);
+      return x-y;
     })
     setSortedList([...newList]);
   }
 
   function TouchdownsSort(){
     const newList = sortedList.sort((a,b)=>{
-      if(a.TD > b.TD){
-        return -1;
-      }
-      if(a.TD < b.TD){
-        return 1;
-      }
-      return 0;
+      return b.TD - a.TD;
     })
     setSortedList([...newList]);
   }
 
   function FilterByName(){
+    //initalize playerList
+    const playerList = [];
+    if (data.length > 0){
+      data.map(player => (
+        playerList.push(player)
+      ))
+    }
+
+    //compare playerList with input value and create new array
     const newList = [];
-    sortedList.map(player=>(
+    playerList.map(player=>(
       (player.Player.includes(input) ? (newList.push(player)) : null)
     ))
     setSortedList([...newList]);
-    console.log(sortedList);
   }
 
   return (
     <div className="App">
     <strong>NFL RUSH</strong>
-    <form onSubmit={FilterByName}>
-        <Input placeholder='Search By Name: ' htmlSize={20} width='auto' onChange={(e)=>setInput(e.target.value)}/>
-        <Button type="submit" >Submit</Button>
-    </form>
+    <br></br>
+    <Input placeholder='Search By Name: ' htmlSize={20} width='auto' onChange={(e)=>setInput(e.target.value)}/>
+    <Button type="submit" onClick={FilterByName}>Submit</Button>
+
     <TableContainer>
     <Table variant='striped' colorScheme='teal'>
       <TableCaption>NFL RUSH</TableCaption>
